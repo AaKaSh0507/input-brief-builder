@@ -1,15 +1,15 @@
 // craco.config.js
 const path = require("path");
+const { VueLoaderPlugin } = require('vue-loader');
 require("dotenv").config();
 
 // Check if we're in development/preview mode (not production build)
-// Craco sets NODE_ENV=development for start, NODE_ENV=production for build
 const isDevServer = process.env.NODE_ENV !== "production";
 
 // Environment variable overrides
 const config = {
   enableHealthCheck: process.env.ENABLE_HEALTH_CHECK === "true",
-  enableVisualEdits: isDevServer, // Only enable during dev server
+  enableVisualEdits: isDevServer,
 };
 
 // Conditionally load visual edits modules only in dev mode
@@ -35,29 +35,48 @@ if (config.enableHealthCheck) {
 const webpackConfig = {
   eslint: {
     configure: {
-      extends: ["plugin:react-hooks/recommended"],
       rules: {
-        "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn",
+        // Disable React-specific rules for Vue
+        "react-hooks/rules-of-hooks": "off",
+        "react-hooks/exhaustive-deps": "off",
       },
     },
   },
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      'vue': 'vue/dist/vue.esm-bundler.js'
     },
     configure: (webpackConfig) => {
+      // Add Vue loader
+      webpackConfig.module.rules.push({
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      });
+
+      // Add VueLoaderPlugin
+      webpackConfig.plugins.push(new VueLoaderPlugin());
+
+      // Modify file extensions
+      webpackConfig.resolve.extensions = [
+        '.vue',
+        '.js',
+        '.jsx',
+        '.ts',
+        '.tsx',
+        '.json'
+      ];
 
       // Add ignored patterns to reduce watched directories
-        webpackConfig.watchOptions = {
-          ...webpackConfig.watchOptions,
-          ignored: [
-            '**/node_modules/**',
-            '**/.git/**',
-            '**/build/**',
-            '**/dist/**',
-            '**/coverage/**',
-            '**/public/**',
+      webpackConfig.watchOptions = {
+        ...webpackConfig.watchOptions,
+        ignored: [
+          '**/node_modules/**',
+          '**/.git/**',
+          '**/build/**',
+          '**/dist/**',
+          '**/coverage/**',
+          '**/public/**',
         ],
       };
 
@@ -65,6 +84,7 @@ const webpackConfig = {
       if (config.enableHealthCheck && healthPluginInstance) {
         webpackConfig.plugins.push(healthPluginInstance);
       }
+
       return webpackConfig;
     },
   },
