@@ -17,7 +17,7 @@ class BriefController:
             brief = Brief(
                 title=brief_data.title,
                 event_type=brief_data.event_type,
-                metadata=brief_data.metadata or {}
+                brief_metadata=brief_data.brief_metadata or {}
             )
             db.add(brief)
             db.commit()
