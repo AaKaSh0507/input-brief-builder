@@ -131,7 +131,7 @@ class BriefController:
                 "title": brief.title,
                 "event_type": brief.event_type,
                 "status": brief.status.value,
-                "metadata": brief.metadata,
+                "brief_metadata": brief.brief_metadata,
                 "sections": [
                     {
                         "section_number": s.section_number,
