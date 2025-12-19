@@ -76,8 +76,8 @@ class BriefController:
                 brief.event_type = brief_data.event_type
             if brief_data.status is not None:
                 brief.status = brief_data.status
-            if brief_data.metadata is not None:
-                brief.metadata = brief_data.metadata
+            if brief_data.brief_metadata is not None:
+                brief.brief_metadata = brief_data.brief_metadata
             
             db.commit()
             db.refresh(brief)
