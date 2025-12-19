@@ -48,11 +48,14 @@ const webpackConfig = {
       'vue': 'vue/dist/vue.esm-bundler.js'
     },
     configure: (webpackConfig) => {
-      // Add Vue loader
-      webpackConfig.module.rules.push({
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      });
+      // Find the rule that contains oneOf and add Vue loader before it
+      const oneOfRule = webpackConfig.module.rules.find(rule => rule.oneOf);
+      if (oneOfRule) {
+        oneOfRule.oneOf.unshift({
+          test: /\.vue$/,
+          loader: 'vue-loader'
+        });
+      }
 
       // Add VueLoaderPlugin
       webpackConfig.plugins.push(new VueLoaderPlugin());
