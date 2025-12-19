@@ -28,7 +28,7 @@ class BriefResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     version: int
-    metadata: Dict[str, Any]
+    brief_metadata: Dict[str, Any]
     
     class Config:
         from_attributes = True
