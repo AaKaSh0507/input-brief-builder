@@ -21,7 +21,7 @@ class Brief(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     version = Column(Integer, default=1)
-    metadata = Column(JSON, default=dict)
+    brief_metadata = Column(JSON, default=dict)
     
     sections = relationship("BriefSection", back_populates="brief", cascade="all, delete-orphan")
     documents = relationship("Document", back_populates="brief", cascade="all, delete-orphan")
