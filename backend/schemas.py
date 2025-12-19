@@ -12,7 +12,7 @@ class BriefStatus(str, Enum):
 class BriefCreate(BaseModel):
     title: str
     event_type: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = {}
+    brief_metadata: Optional[Dict[str, Any]] = {}
 
 class BriefUpdate(BaseModel):
     title: Optional[str] = None
