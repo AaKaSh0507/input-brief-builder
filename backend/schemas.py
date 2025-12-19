@@ -18,7 +18,7 @@ class BriefUpdate(BaseModel):
     title: Optional[str] = None
     event_type: Optional[str] = None
     status: Optional[BriefStatus] = None
-    metadata: Optional[Dict[str, Any]] = None
+    brief_metadata: Optional[Dict[str, Any]] = None
 
 class BriefResponse(BaseModel):
     id: str
