@@ -16,6 +16,16 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       host: '0.0.0.0',
       strictPort: true,
+      allowedHosts: [
+        'basic-spec-builder.preview.emergentagent.com',
+        'localhost',
+        '.emergentagent.com'
+      ],
+      hmr: {
+        host: 'basic-spec-builder.preview.emergentagent.com',
+        protocol: 'wss',
+        clientPort: 443
+      }
     },
     define: {
       'process.env.REACT_APP_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || env.REACT_APP_BACKEND_URL)
