@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || process.env.REACT_APP_BACKEND_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 
+                    process.env.REACT_APP_BACKEND_URL || 
+                    'https://basic-spec-builder.preview.emergentagent.com'
+
+console.log('Backend URL:', BACKEND_URL)
 
 const apiClient = axios.create({
   baseURL: `${BACKEND_URL}/api`,
