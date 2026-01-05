@@ -183,13 +183,16 @@
               <input
                 type="file"
                 @change="handleFileUpload"
-                accept=".pdf,.doc,.docx,.csv,.ppt,.pptx,.png,.jpg,.jpeg"
+                accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.ppt,.pptx,.png,.jpg,.jpeg"
                 class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 :disabled="uploading || isNewBrief"
                 data-testid="file-upload-input"
               />
               <p class="text-xs text-gray-500 mt-1">
-                Supported: PDF, DOC, DOCX, CSV, PPT, PPTX, PNG, JPG
+                Supported: PDF, DOC, DOCX, EXCEL (.xlsx, .xls), CSV, PPT, PPTX, PNG, JPG
+              </p>
+              <p v-if="isNewBrief" class="text-xs text-orange-600 mt-1">
+                ⚠️ Please save the brief first before uploading documents
               </p>
             </div>
 
