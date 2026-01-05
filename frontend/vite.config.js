@@ -28,7 +28,8 @@ export default defineConfig(({ mode }) => {
       }
     },
     define: {
-      'process.env.REACT_APP_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || env.REACT_APP_BACKEND_URL)
+      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || env.REACT_APP_BACKEND_URL || 'https://basic-spec-builder.preview.emergentagent.com'),
+      'process.env.REACT_APP_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || env.REACT_APP_BACKEND_URL || 'https://basic-spec-builder.preview.emergentagent.com')
     }
   }
 })
