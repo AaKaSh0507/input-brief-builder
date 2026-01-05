@@ -141,8 +141,31 @@ const filteredBriefs = computed(() => {
   return briefs.value.filter(b => b.status === selectedTab.value)
 })
 
-const createNewBrief = () => {
-  router.push('/brief/new')
+const createNewBrief = async () => {
+  // Prompt for brief details
+  const title = prompt('Enter brief title:')
+  if (!title) return
+  
+  const eventType = prompt('Enter event type (optional):')
+  
+  try {
+    // Create brief directly
+    await briefStore.createBrief({
+      title,
+      event_type: eventType || null,
+      brief_metadata: {}
+    })
+    
+    // Navigate to the newly created brief
+    if (briefStore.currentBrief && briefStore.currentBrief.id) {
+      router.push(`/brief/${briefStore.currentBrief.id}`)
+    } else {
+      alert('Failed to create brief - no ID returned')
+    }
+  } catch (error) {
+    console.error('Error creating brief:', error)
+    alert('Failed to create brief. Please try again.')
+  }
 }
 
 const openBrief = (id) => {
