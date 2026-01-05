@@ -40,6 +40,8 @@ class DocumentService:
                 return await self._extract_from_pdf(file_path)
             elif file_type in ["doc", "docx"] or file_path.endswith((".doc", ".docx")):
                 return await self._extract_from_docx(file_path)
+            elif file_type in ["xlsx", "xls"] or file_path.endswith((".xlsx", ".xls")):
+                return await self._extract_from_excel(file_path)
             elif file_type == "csv" or file_path.endswith(".csv"):
                 return await self._extract_from_csv(file_path)
             elif file_type in ["ppt", "pptx"] or file_path.endswith((".ppt", ".pptx")):
