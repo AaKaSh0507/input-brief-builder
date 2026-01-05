@@ -88,6 +88,30 @@ class DocumentService:
             logger.error(f"Error reading CSV: {str(e)}")
             return ""
     
+    
+    async def _extract_from_excel(self, file_path: str) -> str:
+        """Extract text from Excel (XLSX/XLS)"""
+        try:
+            import openpyxl
+            workbook = openpyxl.load_workbook(file_path, data_only=True)
+            text = ""
+            
+            for sheet_name in workbook.sheetnames:
+                sheet = workbook[sheet_name]
+                text += f"\n=== Sheet: {sheet_name} ===\n"
+                
+                for row in sheet.iter_rows(values_only=True):
+                    # Filter out None values and convert to strings
+                    row_data = [str(cell) if cell is not None else "" for cell in row]
+                    # Only add non-empty rows
+                    if any(row_data):
+                        text += ", ".join(row_data) + "\n"
+            
+            return text.strip()
+        except Exception as e:
+            logger.error(f"Error reading Excel: {str(e)}")
+            return ""
+
     async def _extract_from_pptx(self, file_path: str) -> str:
         """Extract text from PPTX"""
         try:
