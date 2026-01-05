@@ -1,27 +1,38 @@
 import axios from 'axios'
 
-// Get backend URL - prioritize VITE_ prefix for Vite, fallback to hardcoded production URL
+// Force HTTPS for production
 const getBackendURL = () => {
-  // Check if we're in the browser
   if (typeof window !== 'undefined') {
-    // In production, use the preview URL
-    if (window.location.hostname.includes('emergentagent.com')) {
-      return window.location.origin
+    const hostname = window.location.hostname
+    
+    // Always use HTTPS for emergentagent.com domains
+    if (hostname.includes('emergentagent.com')) {
+      return `https://${hostname}`
+    }
+    
+    // For localhost development
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return `http://${hostname}:8001`
     }
   }
   
-  // For development
-  return import.meta.env.VITE_BACKEND_URL || 
-         process.env.REACT_APP_BACKEND_URL || 
-         'https://basic-spec-builder.preview.emergentagent.com'
+  // Fallback - always HTTPS
+  return 'https://basic-spec-builder.preview.emergentagent.com'
 }
 
 const BACKEND_URL = getBackendURL()
 
 console.log('Backend URL configured as:', BACKEND_URL)
 
+// Ensure baseURL always starts with https:// for production
+const baseURL = BACKEND_URL.startsWith('http://') && BACKEND_URL.includes('emergentagent.com')
+  ? BACKEND_URL.replace('http://', 'https://')
+  : `${BACKEND_URL}/api`
+
+console.log('API Base URL:', baseURL)
+
 const apiClient = axios.create({
-  baseURL: `${BACKEND_URL}/api`,
+  baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json'
   }
