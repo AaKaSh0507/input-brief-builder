@@ -15,7 +15,7 @@ class SectionController:
         try:
             sections = []
             
-            for section_def in DEFAULT_SECTIONS:
+            for section_def in BRIEF_SCHEMA["sections"]:
                 section = BriefSection(
                     brief_id=brief_id,
                     section_number=section_def["number"],
