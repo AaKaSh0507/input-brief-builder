@@ -16,11 +16,24 @@ class SectionController:
             sections = []
             
             for section_def in BRIEF_SCHEMA["sections"]:
+                # Initialize content structure based on schema
+                content = {}
+                for field_group in section_def["inputFields"]:
+                    for field in field_group["fields"]:
+                        field_name = field["inputName"]
+                        if field["dataType"] == "Object":
+                            # For Object types (Name/Email pairs)
+                            content[field_name] = {"Name": "", "Email": ""}
+                        elif field["dataType"] == "Array":
+                            content[field_name] = []
+                        else:
+                            content[field_name] = ""
+                
                 section = BriefSection(
                     brief_id=brief_id,
-                    section_number=section_def["number"],
-                    section_name=section_def["name"],
-                    content={},
+                    section_number=section_def["sectionNumber"],
+                    section_name=section_def["sectionName"],
+                    content=content,
                     ai_generated={}
                 )
                 db.add(section)
