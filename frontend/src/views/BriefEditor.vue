@@ -412,6 +412,13 @@ const exportBrief = async (format) => {
 }
 
 onMounted(async () => {
+  // Check if we have a valid route parameter
+  if (!route.params.id) {
+    console.error('No brief ID in route')
+    router.push('/')
+    return
+  }
+  
   if (isNewBrief.value) {
     // Create new brief
     try {
@@ -429,14 +436,25 @@ onMounted(async () => {
       })
       
       // Update route to use the new brief ID
-      router.replace(`/brief/${briefStore.currentBrief.id}`)
+      if (briefStore.currentBrief && briefStore.currentBrief.id) {
+        router.replace(`/brief/${briefStore.currentBrief.id}`)
+      } else {
+        throw new Error('Brief creation failed - no ID returned')
+      }
     } catch (error) {
+      console.error('Error creating brief:', error)
       alert('Failed to create brief')
       router.push('/')
     }
   } else {
     // Load existing brief
-    await briefStore.fetchBrief(route.params.id)
+    try {
+      await briefStore.fetchBrief(route.params.id)
+    } catch (error) {
+      console.error('Error loading brief:', error)
+      alert('Brief not found')
+      router.push('/')
+    }
   }
 })
 </script>
