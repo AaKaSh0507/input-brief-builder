@@ -3,24 +3,10 @@ from typing import List, Optional, Dict, Any
 from models import BriefSection, Brief
 from schemas import SectionCreate, SectionUpdate
 from services.cache_service import cache_service
+from brief_schema import BRIEF_SCHEMA
 import logging
 
 logger = logging.getLogger(__name__)
-
-# Default section structure
-DEFAULT_SECTIONS = [
-    {"number": 1, "name": "Project Overview"},
-    {"number": 2, "name": "IBM Workstream Owners"},
-    {"number": 3, "name": "GPJ Planning Team"},
-    {"number": 4, "name": "SVP Milestones"},
-    {"number": 5, "name": "Purpose & Targets"},
-    {"number": 6, "name": "Objectives & Audience"},
-    {"number": 7, "name": "Integrations and Considerations"},
-    {"number": 8, "name": "Content Strategy and Narrative"},
-    {"number": 9, "name": "Experience Design"},
-    {"number": 10, "name": "Historic Learnings"},
-    {"number": 11, "name": "Additional Considerations"},
-]
 
 class SectionController:
     
