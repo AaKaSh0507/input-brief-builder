@@ -398,6 +398,175 @@ BRIEF_SCHEMA = {
                     ]
                 }
             ]
+        },
+        {
+            "sectionNumber": 7,
+            "sectionName": "IBM Workstream Owners",
+            "inputFields": [
+                {
+                    "fieldsHeading": "Workstream Owners",
+                    "fields": [
+                        {
+                            "inputName": "Primary Owner",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Name", "Email", "Role"]
+                        },
+                        {
+                            "inputName": "Secondary Owner",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Name", "Email", "Role"]
+                        },
+                        {
+                            "inputName": "Additional Stakeholders",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["List additional IBM workstream owners involved in this project"]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sectionNumber": 8,
+            "sectionName": "GPJ Planning Team",
+            "inputFields": [
+                {
+                    "fieldsHeading": "Planning Team Members",
+                    "fields": [
+                        {
+                            "inputName": "Project Manager",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Name", "Email"]
+                        },
+                        {
+                            "inputName": "Creative Director",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Name", "Email"]
+                        },
+                        {
+                            "inputName": "Technical Lead",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Name", "Email"]
+                        },
+                        {
+                            "inputName": "Additional Team Members",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["List any additional GPJ planning team members"]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sectionNumber": 9,
+            "sectionName": "SVP Milestones",
+            "inputFields": [
+                {
+                    "fieldsHeading": "Key Milestones",
+                    "fields": [
+                        {
+                            "inputName": "Milestone 1",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Description", "Date", "Owner"]
+                        },
+                        {
+                            "inputName": "Milestone 2",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Description", "Date", "Owner"]
+                        },
+                        {
+                            "inputName": "Milestone 3",
+                            "dataType": "Object",
+                            "fieldType": "input",
+                            "objectFields": ["Description", "Date", "Owner"]
+                        },
+                        {
+                            "inputName": "Additional Milestones",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["List any additional milestones with dates and owners"]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sectionNumber": 10,
+            "sectionName": "Integrations and Considerations",
+            "inputFields": [
+                {
+                    "fieldsHeading": "Integration Points",
+                    "fields": [
+                        {
+                            "inputName": "System Integrations",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["List all system integrations required (CRM, Marketing Automation, etc.)"]
+                        },
+                        {
+                            "inputName": "Third-Party Services",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["List third-party services to be integrated"]
+                        },
+                        {
+                            "inputName": "Technical Considerations",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["Document technical considerations, constraints, and requirements"]
+                        },
+                        {
+                            "inputName": "Compliance Requirements",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["List any compliance, security, or regulatory requirements"]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sectionNumber": 11,
+            "sectionName": "Content Strategy and Narrative",
+            "inputFields": [
+                {
+                    "fieldsHeading": "Content Strategy",
+                    "fields": [
+                        {
+                            "inputName": "Overall Narrative",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["Describe the overall narrative and storytelling approach for the event"]
+                        },
+                        {
+                            "inputName": "Key Messages",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["List the key messages to be communicated"]
+                        },
+                        {
+                            "inputName": "Content Pillars",
+                            "dataType": "Array",
+                            "fieldType": "textarea",
+                            "helperText": ["Define the main content pillars or themes"]
+                        },
+                        {
+                            "inputName": "Tone and Voice",
+                            "dataType": "String",
+                            "fieldType": "textarea",
+                            "helperText": ["Describe the desired tone and voice for all content"]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
