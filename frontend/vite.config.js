@@ -4,7 +4,11 @@ import path from 'path'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  
+
+  const BACKEND_URL =
+    env.VITE_BACKEND_URL ||
+    'http://localhost:8001'
+
   return {
     plugins: [vue()],
     resolve: {
@@ -16,20 +20,9 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       host: '0.0.0.0',
       strictPort: true,
-      allowedHosts: [
-        'basic-spec-builder.preview.emergentagent.com',
-        'localhost',
-        '.emergentagent.com'
-      ],
-      hmr: {
-        host: 'basic-spec-builder.preview.emergentagent.com',
-        protocol: 'wss',
-        clientPort: 443
-      }
     },
     define: {
-      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || env.REACT_APP_BACKEND_URL || 'https://basic-spec-builder.preview.emergentagent.com'),
-      'process.env.REACT_APP_BACKEND_URL': JSON.stringify(env.VITE_BACKEND_URL || env.REACT_APP_BACKEND_URL || 'https://basic-spec-builder.preview.emergentagent.com')
-    }
+      'import.meta.env.VITE_BACKEND_URL': JSON.stringify(BACKEND_URL),
+    },
   }
 })

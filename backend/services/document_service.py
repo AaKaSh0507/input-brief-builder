@@ -1,35 +1,56 @@
-import os
-import logging
 from pathlib import Path
-from typing import Optional
-from fastapi import UploadFile
+from typing import Dict, Tuple
+import mimetypes
+import pandas as pd
+import uuid
+import os
 
-logger = logging.getLogger(__name__)
-
+UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR.mkdir(exist_ok=True)
 
 class DocumentService:
-    def __init__(self):
-        BASE_DIR = Path(__file__).resolve().parent.parent
-        self.upload_dir = BASE_DIR / "uploads"
-        self.upload_dir.mkdir(parents=True, exist_ok=True)
 
-    def save_file(self, file: UploadFile) -> Path:
-        file_path = self.upload_dir / file.filename
+    async def save_file(self, content: bytes, filename: str) -> Tuple[str, str]:
+        ext = filename.rsplit(".", 1)[-1].lower()
+        safe_name = f"{uuid.uuid4()}.{ext}"
+        path = UPLOAD_DIR / safe_name
 
-        with open(file_path, "wb") as f:
-            f.write(file.file.read())
+        with open(path, "wb") as f:
+            f.write(content)
 
-        logger.info("File saved to %s", file_path)
-        return file_path
+        mime_type, _ = mimetypes.guess_type(filename)
+        return str(path), mime_type or "application/octet-stream"
 
-    def delete_file(self, filename: str) -> bool:
-        file_path = self.upload_dir / filename
+    async def extract_text_content(self, file_path: str, file_type: str) -> Dict[str, str] | None:
+        if file_type not in {"xlsx", "xls"}:
+            return None
 
-        if file_path.exists():
-            file_path.unlink()
-            return True
+        df = pd.read_excel(file_path)
 
-        return False
+        if df.empty:
+            return None
 
+        row = df.iloc[0]
+
+        # Explicit mapping from Excel → section fields
+        FIELD_MAP = {
+            "Executive Sponsor": "Executive Sponsor",
+            "Event SPOC": "Event SPOC",
+            "Content Lead": "Content Lead",
+            "Demand Strategist": "Demand Strategist",
+            "Field Marketer": "Field Marketer",
+        }
+
+        extracted: Dict[str, str] = {}
+
+        for excel_col, field_name in FIELD_MAP.items():
+            if excel_col in row and pd.notna(row[excel_col]):
+                extracted[field_name] = str(row[excel_col]).strip()
+
+        return extracted
+
+    def delete_file(self, path: str) -> None:
+        if os.path.exists(path):
+            os.remove(path)
 
 document_service = DocumentService()

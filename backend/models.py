@@ -50,7 +50,8 @@ class Document(Base):
     file_path = Column(String, nullable=False)
     file_type = Column(String, nullable=False)
     mime_type = Column(String)
-    extracted_content = Column(Text)  # AI extracted content
+    extracted_content = Column(JSON, default=dict)
+
     uploaded_at = Column(DateTime, default=datetime.utcnow)
     
     brief = relationship("Brief", back_populates="documents")

@@ -1,63 +1,58 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-import os
 import logging
-from pathlib import Path
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-# Import database
 from database import Base, engine
-
-# Import routes
 from routes import brief_routes, section_routes, document_routes, ai_routes
 
-# Load environment variables
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+# Logging
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
-logger.info("Database tables created")
-
-# Create FastAPI app
+# FastAPI app
 app = FastAPI(
     title="GPJ Input Brief Assistant API",
-    description="AI-powered event input brief generation system",
     version="1.0.0"
 )
 
-# CORS middleware
+origins = os.getenv("CORS_ORIGINS", "").split(",")
+origins = [o.strip() for o in origins if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=origins,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Health check endpoint
-@app.get("/api/health")
-async def health_check():
-    return {"status": "healthy", "service": "GPJ Input Brief Assistant"}
+# ✅ Safe DB initialization
+@app.on_event("startup")
+def on_startup():
+    logger.info("Initializing database")
+    Base.metadata.create_all(bind=engine)
 
-# Include routers with /api prefix
+# Health check
+@app.get("/api/health")
+def health():
+    return {"status": "healthy"}
+
+# Routes
 app.include_router(brief_routes.router, prefix="/api")
 app.include_router(section_routes.router, prefix="/api")
 app.include_router(document_routes.router, prefix="/api")
 app.include_router(ai_routes.router, prefix="/api")
 
-# Root endpoint
+# Root
 @app.get("/")
-async def root():
-    return {"message": "GPJ Input Brief Assistant API", "version": "1.0.0"}
+def root():
+    return {"message": "GPJ Input Brief Assistant API"}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run("server:app", host="0.0.0.0", port=port, reload=True)
+

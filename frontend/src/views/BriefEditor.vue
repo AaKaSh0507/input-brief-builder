@@ -354,10 +354,19 @@ const generateAIContent = async () => {
 
 const autoPopulateSection = async () => {
   if (!currentSection.value || !currentBrief.value) return
-  
+
   aiLoading.value = true
   try {
-    const response = await aiAPI.autoPopulate(currentSection.value.id, currentBrief.value.id)
+    const response = await aiAPI.autoPopulate(
+      currentSection.value.id,
+      currentBrief.value.id
+    )
+
+    // 🔑 CRITICAL FIX: force local editor state to update
+    if (response?.content && typeof response.content === 'object') {
+      sectionContent.value = { ...response.content }
+    }
+
     alert('Section auto-populated from documents!')
     await briefStore.fetchSections(currentBrief.value.id)
   } catch (error) {
@@ -366,6 +375,7 @@ const autoPopulateSection = async () => {
     aiLoading.value = false
   }
 }
+
 
 const addCustomField = () => {
   const fieldName = prompt('Enter field name:')
